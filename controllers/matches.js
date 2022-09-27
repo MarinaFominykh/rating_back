@@ -15,8 +15,9 @@ const createMatch = (req, res, next) => {
     date,
     result,
   })
-
-    .then((match) => res.send(match))
+    .then((match) => {
+      res.send(match);
+    })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         const inValidDataError = new InValidDataError('Переданы некорректные данные');
@@ -47,7 +48,17 @@ const deleteMatch = (req, res, next) => {
 };
 
 const getMatches = (req, res, next) => {
-  Match.find({})
+  Match.find({}).populate({
+    path: 'gameMaster',
+    select: 'name',
+  })
+    .populate({
+      path: 'units',
+      populate: {
+        path: 'unit',
+        select: 'name',
+      },
+    })
     .then((matches) => res.send(matches))
     .catch(next);
 };
@@ -56,7 +67,6 @@ const addUnitArray = (req, res, next) => {
   // const {
   //   unit, role, modKill, bestPlayer,
   // } = req.body;
-  console.log(req.body.array);
   for (let i = 0; i <= req.body.array.length - 1; i += 1) {
     Match.findByIdAndUpdate(req.body.id, {
       $addToSet: {
@@ -95,9 +105,36 @@ const addUnitArray = (req, res, next) => {
   }
 };
 
+const updateGameMaster = (req, res, next) => {
+  const {
+    gameMaster, match,
+  } = req.body;
+
+  if (!gameMaster) {
+    throw new InValidDataError('Переданы некорректные данныe');
+  }
+  Match.findByIdAndUpdate(match._id, {
+    gameMaster,
+  }, {
+    new: true,
+  })
+    .then((newGameMaster) => {
+      res.send(newGameMaster);
+    })
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        next(new InValidDataError('Переданы некорректные данные при создании аватара'));
+      } else {
+        next(error);
+      }
+    })
+    .catch(next);
+};
+
 module.exports = {
   createMatch,
   deleteMatch,
   getMatches,
   addUnitArray,
+  updateGameMaster,
 };
