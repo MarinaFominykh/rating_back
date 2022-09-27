@@ -123,7 +123,33 @@ const updateGameMaster = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        next(new InValidDataError('Переданы некорректные данные при создании аватара'));
+        next(new InValidDataError('Переданы некорректные данные'));
+      } else {
+        next(error);
+      }
+    })
+    .catch(next);
+};
+
+const updateTitle = (req, res, next) => {
+  const {
+    title, match,
+  } = req.body;
+
+  if (!title) {
+    throw new InValidDataError('Переданы некорректные данныe');
+  }
+  Match.findByIdAndUpdate(match._id, {
+    title,
+  }, {
+    new: true,
+  })
+    .then((newTitle) => {
+      res.send(newTitle);
+    })
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        next(new InValidDataError('Переданы некорректные данные'));
       } else {
         next(error);
       }
@@ -137,4 +163,5 @@ module.exports = {
   getMatches,
   addUnitArray,
   updateGameMaster,
+  updateTitle,
 };
