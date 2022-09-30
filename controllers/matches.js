@@ -133,10 +133,11 @@ const updateGameMaster = (req, res, next) => {
 
 const updateTitle = (req, res, next) => {
   const {
-    title, match,
+    match, title,
   } = req.body;
+  console.log(req.body);
 
-  if (!title) {
+  if (!match || !title) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
   Match.findByIdAndUpdate(match._id, {
@@ -157,6 +158,32 @@ const updateTitle = (req, res, next) => {
     .catch(next);
 };
 
+const updateUnitInMatch = (req, res, next) => {
+  const {
+    unit, match,
+  } = req.body;
+
+  if (!unit) {
+    throw new InValidDataError('Переданы некорректные данныe');
+  }
+  Match.findByIdAndUpdate(match._id, {
+    unit,
+  }, {
+    new: true,
+  })
+    .then((newUnit) => {
+      res.send(newUnit);
+    })
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        next(new InValidDataError('Переданы некорректные данные'));
+      } else {
+        next(error);
+      }
+    })
+    .catch(next);
+};
+
 module.exports = {
   createMatch,
   deleteMatch,
@@ -164,4 +191,5 @@ module.exports = {
   addUnitArray,
   updateGameMaster,
   updateTitle,
+  updateUnitInMatch,
 };
