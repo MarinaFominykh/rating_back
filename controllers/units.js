@@ -19,12 +19,11 @@ const createUnit = (req, res, next) => {
 
 const updateUnit = (req, res, next) => {
   const { unit, newUnit } = req.body;
-
   // Добавить валидацию в роуты и на клиент и убрать отсюда проверку
   if (!unit || !newUnit) {
     throw new InValidDataError('Данные не переданы');
   }
-  Unit.findOneAndUpdate({ name: unit }, { name: newUnit }, { new: true })
+  Unit.findOneAndUpdate({ name: unit.name }, { name: newUnit }, { new: true })
     .then((newData) => res.send(newData))
     .catch((err) => {
       if (err.name === 'ValidationError') {

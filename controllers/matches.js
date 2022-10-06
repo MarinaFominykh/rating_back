@@ -109,7 +109,7 @@ const updateGameMaster = (req, res, next) => {
   const {
     gameMaster, match,
   } = req.body;
-
+  console.log(match.units);
   if (!gameMaster) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
@@ -135,8 +135,7 @@ const updateTitle = (req, res, next) => {
   const {
     match, title,
   } = req.body;
-  console.log(req.body);
-
+  // console.log(match.units[0].unit.name);
   if (!match || !title) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
@@ -160,14 +159,14 @@ const updateTitle = (req, res, next) => {
 
 const updateUnitInMatch = (req, res, next) => {
   const {
-    unit, match,
+    name, role, checkedModKill, checkedBestPlayer, match,
   } = req.body;
 
-  if (!unit) {
+  if (!name || !role) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
-  Match.findByIdAndUpdate(match._id, {
-    unit,
+  Match.findByIdAndUpdate(match._id.units, {
+    name, role, checkedModKill, checkedBestPlayer,
   }, {
     new: true,
   })
