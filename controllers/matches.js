@@ -79,14 +79,6 @@ const addUnitArray = (req, res, next) => {
           }],
         },
       },
-      // $addToSet: {
-      //   units: {
-      //     unit,
-      //     role,
-      //     modKill,
-      //     bestPlayer,
-      //   },
-      // },
     }, {
       new: true,
     })
@@ -159,17 +151,53 @@ const updateTitle = (req, res, next) => {
 
 const updateUnitInMatch = (req, res, next) => {
   const {
-    name, role, checkedModKill, checkedBestPlayer, match,
+    unit, role, modKill, bestPlayer, match, currentUnit,
   } = req.body;
-
-  if (!name || !role) {
+  const id = currentUnit.unit._id;
+  if (!unit || !role) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
-  Match.findByIdAndUpdate(match._id.units, {
-    name, role, checkedModKill, checkedBestPlayer,
-  }, {
-    new: true,
-  })
+  Match.updateOne(
+    { _id: match._id, 'units.unit': id },
+    {
+      $set: {
+        'units.$.unit': unit,
+        'units.$.role': role,
+        'units.$.modKill': modKill,
+        'units.$.bestPlayer': bestPlayer,
+      },
+    },
+
+  )
+  // Match.findByIdAndUpdate(
+  //   match._id,
+  //   { $pull: { units: { unit: id } } },
+  //   {
+  //     $push: {
+  //       units: {
+  //         unit,
+  //         role,
+  //         modKill,
+  //         bestPlayer,
+  //       },
+  //     },
+  //   },
+  //   { new: true },
+  // )
+  // Match.findByIdAndUpdate(
+  //   match._id,
+  //   {
+  //     $push: {
+  //       units: {
+  //         unit,
+  //         role,
+  //         modKill,
+  //         bestPlayer,
+  //       },
+  //     },
+  //   },
+  //   { new: true },
+  // )
     .then((newUnit) => {
       res.send(newUnit);
     })
