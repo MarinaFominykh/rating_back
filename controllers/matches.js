@@ -149,6 +149,31 @@ const updateTitle = (req, res, next) => {
     .catch(next);
 };
 
+const updateResult = (req, res, next) => {
+  const {
+    match, result,
+  } = req.body;
+  if (!match || !result) {
+    throw new InValidDataError('Переданы некорректные данныe');
+  }
+  Match.findByIdAndUpdate(match._id, {
+    result,
+  }, {
+    new: true,
+  })
+    .then((newResult) => {
+      res.send(newResult);
+    })
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        next(new InValidDataError('Переданы некорректные данные'));
+      } else {
+        next(error);
+      }
+    })
+    .catch(next);
+};
+
 const updateUnitInMatch = (req, res, next) => {
   const {
     unit, role, modKill, bestPlayer, match, currentUnit,
@@ -167,7 +192,6 @@ const updateUnitInMatch = (req, res, next) => {
         'units.$.bestPlayer': bestPlayer,
       },
     },
-
   )
   // Match.findByIdAndUpdate(
   //   match._id,
@@ -218,5 +242,6 @@ module.exports = {
   addUnitArray,
   updateGameMaster,
   updateTitle,
+  updateResult,
   updateUnitInMatch,
 };

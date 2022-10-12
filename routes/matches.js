@@ -7,6 +7,7 @@ const {
   updateGameMaster,
   updateTitle,
   updateUnitInMatch,
+  updateResult,
 
 } = require('../controllers/matches');
 
@@ -17,5 +18,6 @@ router.post('/matches/:id', addUnitArray);
 router.patch('/matches/gameMaster', updateGameMaster);
 router.patch('/matches/title', updateTitle);
 router.patch('/matches/unit', updateUnitInMatch);
+router.patch('/matches/result', updateResult);
 
 module.exports = router;
