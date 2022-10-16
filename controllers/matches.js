@@ -64,29 +64,29 @@ const getMatches = (req, res, next) => {
 };
 
 const addUnitArray = (req, res, next) => {
-  // const {
-  //   unit, role, modKill, bestPlayer,
-  // } = req.body;
+  const {
+    match, array,
+  } = req.body;
   for (let i = 0; i <= req.body.array.length - 1; i += 1) {
-    Match.findByIdAndUpdate(req.body.id, {
+    Match.findByIdAndUpdate(match._id, {
       $addToSet: {
         units: {
           $each: [{
-            unit: req.body.array[i].unit,
-            role: req.body.array[i].role,
-            modKill: req.body.array[i].modKill,
-            bestPlayer: req.body.array[i].bestPlayer,
+            unit: array[i].unit,
+            role: array[i].role,
+            modKill: array[i].modKill,
+            bestPlayer: array[i].bestPlayer,
           }],
         },
       },
     }, {
       new: true,
     })
-      .then((match) => {
-        if (!match) {
+      .then((matchWithUnits) => {
+        if (!matchWithUnits) {
           throw new NotFoundError('Такая игра отсутствует');
         }
-        res.send(match);
+        res.send(matchWithUnits);
       })
       .catch((error) => {
         if (error.kind === 'ObjectId') {
@@ -101,7 +101,7 @@ const updateGameMaster = (req, res, next) => {
   const {
     gameMaster, match,
   } = req.body;
-  console.log(match.units);
+
   if (!gameMaster) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
