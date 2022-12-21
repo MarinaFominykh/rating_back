@@ -8,12 +8,25 @@ const createMatch = (req, res, next) => {
     gameMaster,
     date,
     result,
+    sheriff,
+    done,
+    red,
+    black,
+    modKill,
+    bestPlayer,
+
   } = req.body;
   Match.create({
     title,
     gameMaster,
     date,
     result,
+    sheriff,
+    done,
+    red,
+    black,
+    modKill,
+    bestPlayer,
   })
     .then((match) => {
       res.send(match);
@@ -21,6 +34,7 @@ const createMatch = (req, res, next) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         const inValidDataError = new InValidDataError('Переданы некорректные данные');
+        console.log(error);
         return next(inValidDataError);
       }
       return next(error);
@@ -48,17 +62,34 @@ const deleteMatch = (req, res, next) => {
 };
 
 const getMatches = (req, res, next) => {
-  Match.find({}).populate({
-    path: 'gameMaster',
-    select: 'name',
-  })
+  Match.find({})
     .populate({
-      path: 'units',
-      populate: {
-        path: 'unit',
-        select: 'name',
-      },
+      path: 'gameMaster',
+      select: 'name',
     })
+    .populate({
+      path: 'red',
+      select: 'name',
+    })
+    .populate({
+      path: 'black',
+      select: 'name',
+    })
+    .populate({
+      path: 'sheriff',
+      select: 'name',
+    })
+    .populate({
+      path: 'done',
+      select: 'name',
+    })
+  //   .populate({
+  //     path: 'units',
+  //     populate: {
+  //       path: 'unit',
+  //       select: 'name',
+  //     },
+  //   })
     .then((matches) => res.send(matches))
     .catch(next);
 };
@@ -97,21 +128,41 @@ const addUnitArray = (req, res, next) => {
   }
 };
 
-const updateGameMaster = (req, res, next) => {
+const updateMatch = (req, res, next) => {
   const {
-    gameMaster, match,
+    id, title, gameMaster, date, result,
   } = req.body;
 
-  if (!gameMaster) {
-    throw new InValidDataError('Переданы некорректные данныe');
-  }
-  Match.findByIdAndUpdate(match._id, {
-    gameMaster,
+  // if (!gameMaster) {
+  //   throw new InValidDataError('Переданы некорректные данныe');
+  // }
+  Match.findByIdAndUpdate(id, {
+    title, gameMaster, date, result,
   }, {
     new: true,
   })
-    .then((newGameMaster) => {
-      res.send(newGameMaster);
+    // .populate({
+    //   path: 'gameMaster',
+    //   select: 'name',
+    // })
+    // .populate({
+    //   path: 'red',
+    //   select: 'name',
+    // })
+    // .populate({
+    //   path: 'black',
+    //   select: 'name',
+    // })
+    // .populate({
+    //   path: 'sheriff',
+    //   select: 'name',
+    // })
+    // .populate({
+    //   path: 'done',
+    //   select: 'name',
+    // })
+    .then((newMatch) => {
+      res.send(newMatch);
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
@@ -240,7 +291,7 @@ module.exports = {
   deleteMatch,
   getMatches,
   addUnitArray,
-  updateGameMaster,
+  updateMatch,
   updateTitle,
   updateResult,
   updateUnitInMatch,

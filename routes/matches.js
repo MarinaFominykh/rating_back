@@ -4,7 +4,7 @@ const {
   deleteMatch,
   getMatches,
   addUnitArray,
-  updateGameMaster,
+  updateMatch,
   updateTitle,
   updateUnitInMatch,
   updateResult,
@@ -15,7 +15,9 @@ router.get('/matches', getMatches);
 router.post('/matches', createMatch);
 router.delete('/matches/:id', deleteMatch);
 router.post('/matches/:id', addUnitArray);
-router.patch('/matches/gameMaster', updateGameMaster);
+
+router.patch('/matches/:id', updateMatch);
+
 router.patch('/matches/title', updateTitle);
 router.patch('/matches/unit', updateUnitInMatch);
 router.patch('/matches/result', updateResult);

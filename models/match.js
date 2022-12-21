@@ -21,27 +21,70 @@ const matchSchema = new mongoose.Schema({
     required: true,
     enum: ['Победа города', 'Победа мафии', 'Ничья'],
   },
-  units: [{
-    unit: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'unit',
-      required: true,
-    },
-    role: {
-      type: String,
-      required: true,
-      enum: ['мирный', 'мафия', 'дон', 'шериф'],
-    },
-    modKill: {
-      type: Boolean,
-      default: false,
-    },
-    bestPlayer: {
-      type: Boolean,
-      default: false,
-    },
-
+  sheriff: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'unit',
+    required: true,
+  },
+  done: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'unit',
+    required: true,
+  },
+  red: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'unit',
+    required: true,
   }],
+  black: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'unit',
+    required: true,
+  }],
+  modKill: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'unit',
+  }],
+  bestPlayer: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'unit',
+  }],
+  // red: [{
+  //   unit: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'unit',
+  //     required: true,
+  //   },
+  // }],
+  // black: [{
+  //   unit: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'unit',
+  //     required: true,
+  //   },
+  // }],
+
+  // units: [{
+  //   unit: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'unit',
+  //     required: true,
+  //   },
+  //   role: {
+  //     type: String,
+  //     required: true,
+  //     enum: ['мирный', 'мафия', 'дон', 'шериф'],
+  //   },
+  //   modKill: {
+  //     type: Boolean,
+  //     default: false,
+  //   },
+  //   bestPlayer: {
+  //     type: Boolean,
+  //     default: false,
+  //   },
+
+  // }],
 });
 
 module.exports = mongoose.model('match', matchSchema);
