@@ -17,9 +17,9 @@ router.delete('/matches/:id', deleteMatch);
 router.post('/matches/:id', addUnitArray);
 
 router.patch('/matches/:id', updateMatch);
-
+router.patch('/matches/:id/unit', updateUnitInMatch);
 router.patch('/matches/title', updateTitle);
-router.patch('/matches/unit', updateUnitInMatch);
+
 router.patch('/matches/result', updateResult);
 
 module.exports = router;

@@ -83,20 +83,21 @@ const getMatches = (req, res, next) => {
       path: 'done',
       select: 'name',
     })
-  //   .populate({
-  //     path: 'units',
-  //     populate: {
-  //       path: 'unit',
-  //       select: 'name',
-  //     },
-  //   })
+    //   .populate({
+    //     path: 'units',
+    //     populate: {
+    //       path: 'unit',
+    //       select: 'name',
+    //     },
+    //   })
     .then((matches) => res.send(matches))
     .catch(next);
 };
 
 const addUnitArray = (req, res, next) => {
   const {
-    match, array,
+    match,
+    array,
   } = req.body;
   for (let i = 0; i <= req.body.array.length - 1; i += 1) {
     Match.findByIdAndUpdate(match._id, {
@@ -130,14 +131,32 @@ const addUnitArray = (req, res, next) => {
 
 const updateMatch = (req, res, next) => {
   const {
-    id, title, gameMaster, date, result,
+    id,
+    title,
+    gameMaster,
+    date,
+    result,
+    sheriff,
+    done,
+    red,
+    black,
+    modKill,
+    bestPlayer,
   } = req.body;
-
   // if (!gameMaster) {
   //   throw new InValidDataError('Переданы некорректные данныe');
   // }
   Match.findByIdAndUpdate(id, {
-    title, gameMaster, date, result,
+    title,
+    gameMaster,
+    date,
+    result,
+    sheriff,
+    done,
+    red,
+    black,
+    modKill,
+    bestPlayer,
   }, {
     new: true,
   })
@@ -176,7 +195,8 @@ const updateMatch = (req, res, next) => {
 
 const updateTitle = (req, res, next) => {
   const {
-    match, title,
+    match,
+    title,
   } = req.body;
   // console.log(match.units[0].unit.name);
   if (!match || !title) {
@@ -202,7 +222,8 @@ const updateTitle = (req, res, next) => {
 
 const updateResult = (req, res, next) => {
   const {
-    match, result,
+    match,
+    result,
   } = req.body;
   if (!match || !result) {
     throw new InValidDataError('Переданы некорректные данныe');
@@ -224,26 +245,26 @@ const updateResult = (req, res, next) => {
     })
     .catch(next);
 };
-
 const updateUnitInMatch = (req, res, next) => {
   const {
-    unit, role, modKill, bestPlayer, match, currentUnit,
+    unit,
+    role,
+    currentUnit,
   } = req.body;
   const id = currentUnit.unit._id;
   if (!unit || !role) {
     throw new InValidDataError('Переданы некорректные данныe');
   }
-  Match.updateOne(
-    { _id: match._id, 'units.unit': id },
-    {
-      $set: {
-        'units.$.unit': unit,
-        'units.$.role': role,
-        'units.$.modKill': modKill,
-        'units.$.bestPlayer': bestPlayer,
-      },
+  Match.updateOne({
+    _id: req.params.id,
+    'units.unit': id,
+  }, {
+    $set: {
+      'units.$.unit': unit,
+      'units.$.role': role,
     },
-  )
+  })
+
   // Match.findByIdAndUpdate(
   //   match._id,
   //   { $pull: { units: { unit: id } } },
@@ -259,20 +280,21 @@ const updateUnitInMatch = (req, res, next) => {
   //   },
   //   { new: true },
   // )
-  // Match.findByIdAndUpdate(
-  //   match._id,
-  //   {
-  //     $push: {
-  //       units: {
-  //         unit,
-  //         role,
-  //         modKill,
-  //         bestPlayer,
-  //       },
-  //     },
-  //   },
-  //   { new: true },
-  // )
+
+    // Match.findByIdAndUpdate(
+    //   match._id,
+    //   {
+    //     $push: {
+    //       units: {
+    //         unit,
+    //         role,
+    //         modKill,
+    //         bestPlayer,
+    //       },
+    //     },
+    //   },
+    //   { new: true },
+    // )
     .then((newUnit) => {
       res.send(newUnit);
     })

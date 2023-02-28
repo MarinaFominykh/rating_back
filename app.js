@@ -16,7 +16,10 @@ mongoose.connect('mongodb://localhost:27017/ratingdb', {
 const matchRouter = require('./routes/matches');
 const unitRouter = require('./routes/units');
 const handlerErrors = require('./middlewares/handleErrors');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const {
+  requestLogger,
+  errorLogger,
+} = require('./middlewares/logger');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
