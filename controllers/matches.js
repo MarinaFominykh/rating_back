@@ -83,6 +83,10 @@ const getMatches = (req, res, next) => {
       path: 'done',
       select: 'name',
     })
+    .populate({
+      path: 'bestPlayer',
+      select: 'name',
+    })
     //   .populate({
     //     path: 'units',
     //     populate: {
