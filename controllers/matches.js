@@ -87,6 +87,10 @@ const getMatches = (req, res, next) => {
       path: 'bestPlayer',
       select: 'name',
     })
+    .populate({
+      path: 'modKill',
+      select: 'name',
+    })
     //   .populate({
     //     path: 'units',
     //     populate: {
