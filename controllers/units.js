@@ -8,6 +8,20 @@ const createUnit = (req, res, next) => {
   Unit.create({ name })
     .then((unit) => { res.send(unit); })
     .catch((error) => {
+      console.log('error=>', error.keyValue.name);
+      if (error.code === 11000) {
+        next(new EmailDuplicateError('Пользователь с таким ником уже существует'));
+      } else if (error._message === 'unit validation failed') {
+        return next(new InValidDataError('Переданы некорректные данные'));
+      }
+      return next(error);
+    });
+};
+const createUnits = (req, res, next) => {
+  Unit.insertMany(req.body)
+    .then((units) => { res.send(units); })
+    .catch((error) => {
+      console.log('error=>', error.message.includes('name'));
       if (error.code === 11000) {
         next(new EmailDuplicateError('Пользователь с таким ником уже существует'));
       } else if (error._message === 'unit validation failed') {
@@ -76,4 +90,5 @@ module.exports = {
   updateUnit,
   deleteUnit,
   getUnit,
+  createUnits,
 };
