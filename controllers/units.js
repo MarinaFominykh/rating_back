@@ -21,9 +21,8 @@ const createUnits = (req, res, next) => {
   Unit.insertMany(req.body)
     .then((units) => { res.send(units); })
     .catch((error) => {
-      console.log('error=>', error.message.includes('name'));
       if (error.code === 11000) {
-        next(new EmailDuplicateError('Пользователь с таким ником уже существует'));
+        next(new EmailDuplicateError(`Пользователь с ником ${error.message.slice((error.message.indexOf('name:')) + 6)}уже существует`));
       } else if (error._message === 'unit validation failed') {
         return next(new InValidDataError('Переданы некорректные данные'));
       }
@@ -42,6 +41,9 @@ const updateUnit = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new InValidDataError('Переданы некорректные данные при обновлении данных игрока'));
+      } else if (err.code === 11000) {
+        // res.status(409).send('<h1>Страница не найдена</h1>');
+        next(new EmailDuplicateError(`Пользователь с ником ${err.keyValue.name} уже существует`));
       } else { next(err); }
     })
     .catch(next);
