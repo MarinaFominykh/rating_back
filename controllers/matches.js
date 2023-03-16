@@ -29,12 +29,13 @@ const createMatch = (req, res, next) => {
     bestPlayer,
   })
     .then((match) => {
-      res.send(match);
+      // res.send(match);
+      console.log(match);
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         const inValidDataError = new InValidDataError('Переданы некорректные данные');
-        console.log(error);
+        console.log('error =>', error);
         return next(inValidDataError);
       }
       return next(error);
