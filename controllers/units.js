@@ -6,7 +6,9 @@ const NotFoundError = require('../errors/not-found-err');
 const createUnit = (req, res, next) => {
   const { name } = req.body;
   Unit.create({ name })
-    .then((unit) => { res.send(unit); })
+    .then((unit) => {
+      res.send(unit);
+    })
     .catch((error) => {
       // console.log('error=>', error.keyValue.name);
       if (error.code === 11000) {
@@ -22,6 +24,7 @@ const createUnits = (req, res, next) => {
   Unit.insertMany(array)
     .then((units) => { res.send(units); })
     .catch((error) => {
+      console.log('error=>', error);
       if (error.code === 11000) {
         next(new EmailDuplicateError(`Пользователь с ником ${error.message.slice((error.message.indexOf('name:')) + 6)}уже существует`));
       } else if (error._message === 'unit validation failed') {

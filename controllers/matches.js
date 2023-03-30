@@ -1,4 +1,5 @@
 const Match = require('../models/match');
+// const Unit = require('../models/unit');
 const InValidDataError = require('../errors/in-valid-data-err');
 const NotFoundError = require('../errors/not-found-err');
 
@@ -16,6 +17,71 @@ const createMatch = (req, res, next) => {
     bestPlayer,
 
   } = req.body;
+  // const inputs = [
+  //   ...red,
+  //   ...black,
+  //   gameMaster,
+  //   sheriff,
+  //   done,
+  // ];
+  // console.log(inputs);
+
+  // const newData = () => inputs.map((value) => {
+  //   if (value.length === 24) { return value; }
+  //   return Unit.create({ name: value }).then((unit) => unit._id);
+  // });
+  // console.log('newData=>', newData());
+  // if (sheriff.length === 24 && gameMaster === 24) {
+  //   Match.create({
+  //     title,
+  //     gameMaster,
+  //     date,
+  //     result,
+  //     sheriff,
+  //     done,
+  //     red,
+  //     black,
+  //     modKill,
+  //     bestPlayer,
+  //   })
+  //     .then((match) => {
+  //       res.send(match);
+  //     })
+  //     .catch((error) => {
+  //       if (error.name === 'ValidationError') {
+  //         const inValidDataError = new InValidDataError('Переданы некорректные данные');
+  //         // console.log('error =>', error);
+  //         return next(inValidDataError);
+  //       }
+  //       return next(error);
+  //     });
+  // } else {
+  //   Unit.create({ name: sheriff }).then((unit) => Match.create({
+  //     title,
+  //     gameMaster,
+  //     date,
+  //     result,
+  //     sheriff: unit._id,
+  //     done,
+  //     red,
+  //     black,
+  //     modKill,
+  //     bestPlayer,
+  //   }))
+  //     .then((match) => {
+  //       res.send(match);
+  //     })
+  //     .catch((error) => {
+  //       if (error.name === 'ValidationError') {
+  //         const inValidDataError = new InValidDataError('Переданы некорректные данные');
+  //         console.log('error =>', error);
+  //         return next(inValidDataError);
+  //       }
+  //       return next(error);
+  //     });
+  // }
+
+  // Использовать конструкцию switch/case для проверки новых игроков
   Match.create({
     title,
     gameMaster,
@@ -29,13 +95,12 @@ const createMatch = (req, res, next) => {
     bestPlayer,
   })
     .then((match) => {
-      // res.send(match);
-      console.log(match);
+      res.send(match);
     })
     .catch((error) => {
+      console.log('error=>', error);
       if (error.name === 'ValidationError') {
         const inValidDataError = new InValidDataError('Переданы некорректные данные');
-        console.log('error =>', error);
         return next(inValidDataError);
       }
       return next(error);
