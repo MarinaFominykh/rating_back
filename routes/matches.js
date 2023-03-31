@@ -11,15 +11,13 @@ const {
 
 } = require('../controllers/matches');
 
-router.get('/matches', getMatches);
-router.post('/matches', createMatch);
-router.delete('/matches/:id', deleteMatch);
-router.post('/matches/:id', addUnitArray);
-
-router.patch('/matches/:id', updateMatch);
-router.patch('/matches/:id/unit', updateUnitInMatch);
-router.patch('/matches/title', updateTitle);
-
-router.patch('/matches/result', updateResult);
+router.get('/', getMatches);
+router.post('/', createMatch);
+router.delete('/:id', deleteMatch);
+router.post('/:id', addUnitArray);
+router.patch('/:id', updateMatch);
+router.patch('/:id/unit', updateUnitInMatch);
+router.patch('/title', updateTitle);
+router.patch('/result', updateResult);
 
 module.exports = router;

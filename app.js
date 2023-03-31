@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -13,8 +14,9 @@ mongoose.connect('mongodb://localhost:27017/ratingdb', {
   useNewUrlParser: true,
 });
 
-const matchRouter = require('./routes/matches');
-const unitRouter = require('./routes/units');
+// const matchRouter = require('./routes/matches');
+// const unitRouter = require('./routes/units');
+const router = require('./routes/routes');
 const handlerErrors = require('./middlewares/handleErrors');
 const {
   requestLogger,
@@ -27,8 +29,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(requestLogger);
 app.use(cors());
-app.use(matchRouter);
-app.use(unitRouter);
+app.use(router);
+// app.use(matchRouter);
+// app.use(unitRouter);
 app.use(errorLogger);
 app.use(handlerErrors);
 app.listen(PORT, () => {
