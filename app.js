@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const {
+  errors,
+} = require('celebrate');
 
 const bodyParser = require('body-parser');
 
@@ -30,8 +33,7 @@ app.use(bodyParser.urlencoded({
 app.use(requestLogger);
 app.use(cors());
 app.use(router);
-// app.use(matchRouter);
-// app.use(unitRouter);
+app.use(errors());
 app.use(errorLogger);
 app.use(handlerErrors);
 app.listen(PORT, () => {

@@ -3,21 +3,14 @@ const {
   createMatch,
   deleteMatch,
   getMatches,
-  addUnitArray,
   updateMatch,
-  updateTitle,
-  updateUnitInMatch,
-  updateResult,
 
 } = require('../controllers/matches');
+const { validateCreateMatch, validateDeleteMatch, validateUpdateMatch } = require('../middlewares/validations');
 
 router.get('/', getMatches);
-router.post('/', createMatch);
-router.delete('/:id', deleteMatch);
-router.post('/:id', addUnitArray);
-router.patch('/:id', updateMatch);
-router.patch('/:id/unit', updateUnitInMatch);
-router.patch('/title', updateTitle);
-router.patch('/result', updateResult);
+router.post('/', validateCreateMatch, createMatch);
+router.delete('/:id', validateDeleteMatch, deleteMatch);
+router.patch('/:id', validateUpdateMatch, updateMatch);
 
 module.exports = router;

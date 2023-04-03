@@ -24,7 +24,6 @@ const createUnits = (req, res, next) => {
   Unit.insertMany(array)
     .then((units) => { res.send(units); })
     .catch((error) => {
-      console.log('error=>', error);
       if (error.code === 11000) {
         next(new EmailDuplicateError(`Пользователь с ником ${error.message.slice((error.message.indexOf('name:')) + 6)}уже существует`));
       } else if (error._message === 'unit validation failed') {
@@ -35,12 +34,8 @@ const createUnits = (req, res, next) => {
 };
 
 const updateUnit = (req, res, next) => {
-  const { unit, newUnit } = req.body;
-  // Добавить валидацию в роуты и на клиент и убрать отсюда проверку
-  if (!unit || !newUnit) {
-    throw new InValidDataError('Данные не переданы');
-  }
-  Unit.findOneAndUpdate({ name: unit.name }, { name: newUnit }, { new: true })
+  const { name } = req.body;
+  Unit.findByIdAndUpdate(req.params.id, { name }, { new: true })
     .then((newData) => res.send(newData))
     .catch((err) => {
       if (err.name === 'ValidationError') {

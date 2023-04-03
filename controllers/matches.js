@@ -24,9 +24,7 @@ const createMatch = (req, res, next) => {
   //   sheriff,
   //   done,
   // ];
-  // console.log(inputs);
-
-  // const newData = () => inputs.map((value) => {
+    // const newData = () => inputs.map((value) => {
   //   if (value.length === 24) { return value; }
   //   return Unit.create({ name: value }).then((unit) => unit._id);
   // });
