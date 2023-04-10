@@ -1,5 +1,5 @@
 name: Enviroment
-on: push
+on: [push, workflow_dispatch]
 env:
   NODE_ENV: production
   JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
@@ -11,5 +11,3 @@ jobs:
       run: |
         echo "${{ env.NODE_ENV}}"
         echo "${{ env.JWT_SECRET_KEY}}"
-
-  
