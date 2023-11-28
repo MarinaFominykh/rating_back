@@ -13,7 +13,10 @@ const {
 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/ratingdb', {
+// mongoose.connect('mongodb://localhost:27017/ratingdb', {
+//   useNewUrlParser: true,
+// });
+mongoose.connect('mongodb://127.0.0.1/ratingdb', {
   useNewUrlParser: true,
 });
 
