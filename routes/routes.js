@@ -9,11 +9,11 @@ const {
   validateLogin,
 } = require('../middlewares/validations');
 
-router.post('/api/signup', validateCreateUser, createUser);
-router.post('/api/signin', validateLogin, loginUser);
+router.post('/signup', validateCreateUser, createUser);
+router.post('/signin', validateLogin, loginUser);
 
-router.use('/api/users', userRouter);
-router.use('/api/units', unitRouter);
-router.use('/api/matches', matchRouter);
+router.use('/users', userRouter);
+router.use('/units', unitRouter);
+router.use('/matches', matchRouter);
 
 module.exports = router;
