@@ -1,14 +1,13 @@
-const {
-  celebrate,
-  Joi,
-} = require('celebrate');
+const { celebrate, Joi } = require("celebrate");
 
 // POST /signup
 const validateCreateUser = celebrate({
-  body: Joi.object().keys({
-    login: Joi.string().required(),
-    password: Joi.string().required(),
-  }).unknown(true),
+  body: Joi.object()
+    .keys({
+      login: Joi.string().required(),
+      password: Joi.string().required(),
+    })
+    .unknown(true),
 });
 // POST /signin
 const validateLogin = celebrate({
@@ -32,6 +31,26 @@ const validateCreateMatch = celebrate({
     modKill: Joi.array().required(),
     bestPlayer: Joi.array().required(),
   }),
+});
+
+// POST /matches/array
+const validateCreateMatches = celebrate({
+  body: Joi.array()
+    .required()
+    .items(
+      Joi.object().keys({
+        title: Joi.string().required(),
+        gameMaster: Joi.string().length(24).hex().required(),
+        date: Joi.string().required(),
+        result: Joi.string().required(),
+        sheriff: Joi.string().length(24).hex().required(),
+        done: Joi.string().length(24).hex().required(),
+        red: Joi.array().length(6).required(),
+        black: Joi.array().length(2).required(),
+        modKill: Joi.array().required(),
+        bestPlayer: Joi.array().required(),
+      })
+    ),
 });
 
 // Delete /matches/:id
@@ -90,6 +109,7 @@ module.exports = {
   validateCreateUser,
   validateLogin,
   validateCreateMatch,
+  validateCreateMatches,
   validateDeleteMatch,
   validateUpdateMatch,
   validateCreateUnit,
